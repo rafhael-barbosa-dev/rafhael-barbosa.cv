@@ -1,23 +1,113 @@
-/* Importa a fonte Poppins */
+/* Importa a fonte Poppins e a biblioteca de animações AOS */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+@import url('https://unpkg.com/aos@next/dist/aos.css');
 
 :root {
     --bg-dark: #121214;
+    --card-bg: #202024;
     --brand-blue: #0052CC;
-    --text-light: #FFFFFF;
+    --text-light: #E1E1E6;
     --text-gray: #C4C4CC;
+    --border-color: #323238;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
     background-color: var(--bg-dark);
     color: var(--text-light);
     font-family: 'Poppins', sans-serif;
-    margin: 0;
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    flex-direction: column;
+    gap: 30px; /* Espaçamento entre os cartões */
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 32px;
+    text-align: left;
+}
+
+/* --- Estilos de Texto --- */
+.title { font-size: 2.5rem; color: var(--text-light); text-align: center; }
+.subtitle { font-size: 1.2rem; color: var(--brand-blue); text-align: center; margin-bottom: 20px; }
+.summary { font-size: 1rem; color: var(--text-gray); text-align: center; }
+h3 { font-size: 1.5rem; color: var(--text-light); margin-bottom: 20px; border-left: 4px solid var(--brand-blue); padding-left: 10px;}
+ul { list-style: none; }
+ul li { margin-bottom: 10px; }
+
+/* --- Layout da Seção de Habilidades --- */
+.skills-grid {
+    display: flex;
+    gap: 30px;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+.chart-container { flex: 2; /* O gráfico ocupa mais espaço */ }
+.details-container { flex: 1; /* Os detalhes ocupam menos espaço */ }
+.detail-box { margin-top: 20px; }
+.detail-box h4 { color: var(--text-light); }
+.detail-box p { color: var(--text-gray); }
+
+/* --- Formulário de Feedback --- */
+.feedback-form {
+    display: flex;
+    gap: 10px;
+}
+textarea {
+    flex-grow: 1;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 10px;
+    color: var(--text-light);
+    font-family: 'Poppins', sans-serif;
+    min-height: 50px;
+}
+button {
+    background-color: var(--brand-blue);
+    color: var(--text-light);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+button:hover {
+    background-color: #0041a3;
+}
+.success-message {
+    color: #00B37E; /* Um verde para sucesso */
+    margin-top: 15px;
     text-align: center;
 }
 
-/* ... adicione mais estilos para os botões, modais, etc. ... */
+/* --- RESPONSIVIDADE PARA MOBILE --- */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 15px;
+        gap: 20px;
+    }
+    .title { font-size: 2rem; }
+    h3 { font-size: 1.3rem; }
+
+    .skills-grid {
+        flex-direction: column; /* Em telas pequenas, as colunas viram linhas */
+    }
+}
