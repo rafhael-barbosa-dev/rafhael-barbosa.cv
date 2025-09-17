@@ -1,0 +1,23 @@
+/* Importa a fonte Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+    --bg-dark: #121214;
+    --brand-blue: #0052CC;
+    --text-light: #FFFFFF;
+    --text-gray: #C4C4CC;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+}
+
+/* ... adicione mais estilos para os botões, modais, etc. ... */

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - Rafhael Barbosa</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Meu Perfil Profissional</h1>
+    </header>
+    
+    <section id="chart-section">
+        <h2>Minhas Habilidades (Autoavaliação)</h2>
+        <div style="width: 500px; height: 500px;">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div id="details-section">
+            <h3>Detalhes da Área Selecionada</h3>
+            <div id="experienceBox">
+                <h4>Experiências:</h4>
+                <p>Clique em uma área do gráfico para ver os detalhes.</p>
+            </div>
+            <div id="commentBox">
+                <h4>Comentário:</h4>
+                <p></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="feedback-section">
+        <h2>Deixe seu Feedback</h2>
+        <textarea id="commentInput" placeholder="Seu comentário..."></textarea>
+        <button id="sendCommentBtn">Enviar Comentário</button>
+        </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
