@@ -142,23 +142,23 @@ function renderBarChart(data) {
             datasets: [{
                 data: values,
                 backgroundColor: barColors,
-                barPercentage: 0.8,
-                categoryPercentage: 0.7
+                // REMOVIDO: barPercentage e categoryPercentage
+                // ADICIONADO: barThickness para forçar a largura das barras
+                barThickness: 30, // Largura de 30 pixels por barra
             }]
         },
         options: {
             indexAxis: 'y', responsive: true, maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                // --- CORES CORRIGIDAS AQUI ---
                 x: {
                     beginAtZero: true, max: 10,
-                    grid: { color: 'rgba(225, 225, 230, 0.1)' }, // Linhas da grade X
-                    ticks: { color: '#E1E1E6' }                 // Números no eixo X
+                    grid: { color: 'rgba(225, 225, 230, 0.1)' },
+                    ticks: { color: '#E1E1E6' }
                 },
                 y: {
                     grid: { display: false },
-                    ticks: { color: '#E1E1E6' }                 // Nomes das áreas no eixo Y
+                    ticks: { color: '#E1E1E6' }
                 }
             }
         }
