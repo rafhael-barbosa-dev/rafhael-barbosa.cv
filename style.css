@@ -1,21 +1,17 @@
-/* Importa a fonte Poppins e a biblioteca de animações AOS */
+/* Importa a fonte Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-@import url('https://unpkg.com/aos@next/dist/aos.css');
 
 :root {
     --bg-dark: #121214;
     --card-bg: #202024;
-    --brand-yellow: #F7B737;
+    --brand-red: #DC2626;
+    --star-yellow: #F7B737; /* Cor amarela específica para as estrelas */
     --text-light: #E1E1E6;
     --text-gray: #8D8D99;
     --border-color: #323238;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     background-color: var(--bg-dark);
@@ -24,118 +20,111 @@ body {
     line-height: 1.6;
 }
 
-/* --- ESTILO DO MODAL POP-UP --- */
+/* --- PRELOADER --- */
+#preloader {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: var(--bg-dark); z-index: 2000;
+    display: flex; justify-content: center; align-items: center;
+    transition: opacity 0.5s ease-out;
+}
+.loader-text { font-size: 2rem; color: var(--brand-red); font-weight: bold; }
+#main-content { visibility: hidden; opacity: 0; transition: opacity 0.5s ease-in; }
+
+/* --- MODAL POP-UP --- */
 .modal-overlay {
-    position: fixed; /* Fica fixo na tela */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Fundo preto semi-transparente */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Garante que fique por cima de tudo */
-    opacity: 0;
-    visibility: hidden;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center;
+    align-items: center; z-index: 1000; opacity: 0; visibility: hidden;
     transition: opacity 0.3s, visibility 0.3s;
 }
-
-.modal-overlay.visible {
-    opacity: 1;
-    visibility: visible;
-}
-
+.modal-overlay.visible { opacity: 1; visibility: visible; }
 .modal-content {
-    background-color: var(--card-bg);
-    padding: 40px;
-    border-radius: 8px;
-    text-align: center;
-    width: 90%;
-    max-width: 400px;
+    background-color: var(--card-bg); padding: 40px; border-radius: 8px;
+    text-align: center; width: 90%; max-width: 400px;
 }
-
-.modal-content h2 {
-    margin-bottom: 20px;
-}
-
+.modal-content h2 { margin-bottom: 20px; }
 .modal-content input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
-    background-color: var(--bg-dark);
-    color: var(--text-light);
-    font-size: 1rem;
+    width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 5px;
+    border: 1px solid var(--border-color); background-color: var(--bg-dark);
+    color: var(--text-light); font-size: 1rem;
 }
 
 /* --- LAYOUT PRINCIPAL E CARDS --- */
-.container {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+.container { width: 100%; max-width: 900px; margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; gap: 30px; }
+.card { background-color: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color); padding: 32px; text-align: left; }
+.button-container { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+.button {
+    background-color: transparent; color: var(--brand-red); border: 1px solid var(--brand-red);
+    padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold;
+    text-decoration: none; transition: background-color 0.2s, color 0.2s;
 }
+.button:hover { background-color: var(--brand-red); color: var(--text-light); }
 
-.card {
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    padding: 32px;
-    text-align: left;
-}
-
-/* --- ESTILOS DE TEXTO E TÍTULOS --- */
+/* --- TEXTO E TÍTULOS --- */
 .title { font-size: 2.5rem; color: var(--text-light); text-align: center; }
-.subtitle { font-size: 1.2rem; color: var(--brand-yellow); text-align: center; margin-bottom: 20px; font-weight: bold;}
+.subtitle { font-size: 1.2rem; color: var(--brand-red); text-align: center; margin-bottom: 20px; font-weight: bold;}
 .summary { font-size: 1rem; color: var(--text-gray); text-align: center; max-width: 700px; margin: 0 auto;}
-h3 { font-size: 1.5rem; color: var(--text-light); margin-bottom: 20px; border-left: 4px solid var(--brand-yellow); padding-left: 10px;}
-ul { list-style: none; padding-left: 15px; }
-ul li { margin-bottom: 10px; }
+h3 { font-size: 1.5rem; color: var(--text-light); margin-bottom: 20px; border-left: 4px solid var(--brand-red); padding-left: 10px;}
 
-/* --- SEÇÃO DE HABILIDADES E GRÁFICO --- */
-.skills-grid {
-    display: flex;
-    gap: 30px;
-    background-color: transparent;
-    border: none;
-    padding: 0;
+/* --- COMPETÊNCIAS E ÍCONES --- */
+.competencies-list { list-style: none; padding-left: 0; }
+.competencies-list li { margin-bottom: 15px; display: flex; align-items: center; }
+.competencies-list i { color: var(--brand-red); font-size: 1.2rem; margin-right: 15px; width: 20px; text-align: center; }
+
+/* --- HABILIDADES E GRÁFICOS --- */
+.charts-wrapper { display: flex; gap: 30px; align-items: center; }
+.chart-container { flex: 1; min-width: 0; }
+.interactive-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.legend-item {
+    background-color: var(--border-color); color: var(--text-light);
+    padding: 5px 10px; border-radius: 5px; cursor: pointer;
+    transition: background-color 0.2s; border: 1px solid transparent;
 }
-.chart-container { flex: 2; }
-.details-container { flex: 1; }
+.legend-item:hover { background-color: #4a4a50; }
+.legend-item.active {
+    background-color: var(--brand-red); /* Fundo vermelho quando ativo */
+    color: var(--text-light); /* Texto branco */
+    font-weight: bold;
+    border-color: var(--brand-red);
+}
+.divider { border: none; height: 1px; background-color: var(--border-color); margin: 25px 0; }
+.details-container { margin-top: 20px; }
 .detail-box h4 { color: var(--text-light); }
 .detail-box p { color: var(--text-gray); }
 
-/* --- SEÇÃO DE FEEDBACK E ESTRELAS --- */
+/* --- FEEDBACK E ESTRELAS --- */
 .feedback-form { display: flex; flex-direction: column; gap: 20px; }
 .stars-container { display: flex; justify-content: center; gap: 5px; margin-bottom: 15px; }
 .star {
-    font-size: 2.5rem;
-    color: var(--text-gray);
-    cursor: pointer;
+    font-size: 2.5rem; color: var(--text-gray); cursor: pointer;
     transition: color 0.2s, transform 0.2s;
 }
-.star:hover {
-    transform: scale(1.2);
-}
-.star.hover { color: var(--brand-yellow); }
-.star.selected { color: var(--brand-yellow); }
+.star:hover { transform: scale(1.2); }
+.star.hover, .star.selected { color: var(--star-yellow); } /* Cor amarela */
 
 .comment-box { display: flex; gap: 10px; }
 textarea { flex-grow: 1; background-color: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 5px; padding: 10px; color: var(--text-light); font-family: 'Poppins', sans-serif; min-height: 50px;}
-button { background-color: var(--brand-yellow); color: var(--bg-dark); border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: background-color 0.2s; }
-button:hover { background-color: #d6a02f; }
+button {
+    background-color: var(--brand-red); color: var(--text-light); border: none;
+    padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;
+    transition: background-color 0.2s;
+}
+button:hover { background-color: #b91c1c; }
 .success-message { color: #00B37E; margin-top: 15px; text-align: center; font-weight: bold; }
+
+/* --- SCROLLBAR VERMELHA --- */
+/* Para navegadores WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--card-bg); }
+::-webkit-scrollbar-thumb { background: var(--brand-red); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b91c1c; }
 
 /* --- RESPONSIVIDADE --- */
 @media (max-width: 768px) {
     .container { padding: 20px 15px; gap: 20px; }
     .title { font-size: 2rem; }
     h3 { font-size: 1.3rem; }
-    .skills-grid { flex-direction: column; }
+    .charts-wrapper { flex-direction: column; }
     .modal-content { padding: 30px; }
+    .button-container { justify-content: center; }
 }
