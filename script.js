@@ -1,5 +1,5 @@
 // IMPORTANTE: Cole aqui a URL completa da implantação do seu Google Apps Script.
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwU8JyyLcYZw2IDYMB2KOJwmiB1glPpXUKNadHGxeHGWYoX3v8eWzIzMZIcgIFF9m1H/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyGfw0g-0qyfHqJoWgljH1IlsORDcht8kxLeEic_Zu6GnsRk5y2UlbB0yGqY2dVOUHRSA/exec";
 
 // --- LÓGICA DA PÁGINA INICIAL (index.html) ---
 if (document.getElementById('lerMaisBtn')) {
