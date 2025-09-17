@@ -1,4 +1,4 @@
-const SCRIPT_URL = "SUA_URL_DO_APPS_SCRIPT_AQUI"; // <-- COLE SUA URL AQUI!
+const SCRIPT_URL = "AKfycbwcxGwL1n2B6tb3JUbSVqs1PH9wA5-nebKtqa4G3tCVKhrQtQCI2zUYIqvWYEAmHG2t"; // <-- COLE SUA URL AQUI!
 
 // Lógica para a PÁGINA INICIAL (index.html)
 if (document.getElementById('lerMaisBtn')) {
@@ -116,4 +116,5 @@ if (document.getElementById('myChart')) {
             });
         }
     });
+
 }
