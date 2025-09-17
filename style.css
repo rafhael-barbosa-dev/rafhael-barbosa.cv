@@ -221,3 +221,19 @@ button:disabled { background-color: #555; cursor: not-allowed; }
         padding: 0 10px; /* Adiciona um pequeno respiro nas laterais */
     }
 }
+
+/* --- AJUSTE DE RESPONSIVIDADE PARA INFORMAÇÕES PESSOAIS NO MOBILE --- */
+/* Esta regra será aplicada apenas em telas com largura máxima de 768px */
+@media (max-width: 768px) {
+    .personal-info-list strong {
+        display: block; /* Faz o título (ex: "Nome:") ocupar a linha inteira */
+        min-width: 0; /* Remove a largura mínima que não é necessária no mobile */
+        margin-bottom: 4px; /* Adiciona um pequeno espaço abaixo do título */
+        color: var(--text-light); /* Mantém a cor clara para destaque */
+    }
+
+    .personal-info-list li {
+        padding-top: 12px; /* Aumenta o espaçamento superior para separar os itens */
+        padding-bottom: 12px;
+    }
+}
