@@ -1,41 +1,57 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil - Rafhael Barbosa</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-    <header>
-        <h1>Meu Perfil Profissional</h1>
-    </header>
-    
-    <section id="chart-section">
-        <h2>Minhas Habilidades (Autoavaliação)</h2>
-        <div style="width: 500px; height: 500px;">
+<main class="container">
+    <section id="hero" class="card" data-aos="fade-up">
+        <h1 class="title">João Rafhael Barbosa</h1>
+        <h2 class="subtitle">Especialista em Operações V4 & Desenvolvedor de Soluções</h2>
+        <p class="summary">
+            "Nos últimos 5 anos, estive imerso na operação de uma franquia V4 Company, onde vivenciei cada desafio e oportunidade. [cite: 7] Minha inclinação natural para a lógica e organização me levou a não apenas executar, mas a sistematizar. [cite: 7] Criei processos, estruturei fluxos e, quando as ferramentas não eram suficientes, construí as minhas, culminando no desenvolvimento de um aplicativo e solidificando meu objetivo: migrar para a área de tecnologia da V4." [cite: 7]
+        </p>
+    </section>
+
+    <section id="skills" class="skills-grid" data-aos="fade-up" data-aos-delay="100">
+        <div class="chart-container card">
+            <h3>Minhas Habilidades (Autoavaliação)</h3>
             <canvas id="myChart"></canvas>
         </div>
-        <div id="details-section">
+        <div class="details-container card">
             <h3>Detalhes da Área Selecionada</h3>
-            <div id="experienceBox">
+            <div id="experienceBox" class="detail-box">
                 <h4>Experiências:</h4>
                 <p>Clique em uma área do gráfico para ver os detalhes.</p>
             </div>
-            <div id="commentBox">
+            <div id="commentBox" class="detail-box">
                 <h4>Comentário:</h4>
-                <p></p>
+                <p>Aguardando seleção...</p>
             </div>
         </div>
     </section>
+    
+    <section id="competencies" class="card" data-aos="fade-up" data-aos-delay="200">
+        <h3>Competências-Chave</h3>
+        <ul>
+            <li><strong>Visão Sistêmica e Otimização de Processos:</strong> Habilidade natural para identificar gargalos e desenhar soluções estruturadas. [cite: 12]</li>
+            <li><strong>Perfil Técnico e Resolução de Problemas:</strong> Aptidão "Muito Alta" para habilidades técnicas, com foco em lógica e dados. [cite: 13]</li>
+            <li><strong>Desenvolvimento Prático de Ferramentas:</strong> Experiência na concepção e implementação de um aplicativo, incluindo banco de dados e lógica de programação. [cite: 14]</li>
+            <li><strong>Organização e Planejamento:</strong> Capacidade "Muito Alta" de planejamento, metódico e orientado a processos. [cite: 15]</li>
+        </ul>
+    </section>
 
-    <section id="feedback-section">
-        <h2>Deixe seu Feedback</h2>
-        <textarea id="commentInput" placeholder="Seu comentário..."></textarea>
-        <button id="sendCommentBtn">Enviar Comentário</button>
-        </section>
+    <section id="feedback" class="card" data-aos="fade-up" data-aos-delay="300">
+        <h3>Deixe seu Feedback</h3>
+        <form id="feedbackForm" class="feedback-form">
+            <textarea id="commentInput" placeholder="Seu comentário..."></textarea>
+            <button id="sendCommentBtn" type="button">Enviar Comentário</button>
+        </form>
+        <p id="feedbackSuccess" class="success-message" style="display: none;">Obrigado pelo seu feedback!</p>
+    </section>
 
-    <script src="script.js"></script>
-</body>
-</html>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  AOS.init({
+      once: true, // A animação acontece apenas uma vez
+      duration: 800 // Duração da animação
+  });
+</script>
+<script src="script.js"></script>
