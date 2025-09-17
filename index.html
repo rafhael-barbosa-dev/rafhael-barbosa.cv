@@ -5,19 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apresentação de Rafhael Barbosa</title>
     <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="icon" type="image/png" href="favicon.png"> </head>
 <body>
-    <main>
+    <main class="container" style="text-align: center;">
         <h1>Bem vindo a apresentação de Rafhael Barbosa!</h1>
         <button id="lerMaisBtn">Ler mais</button>
     </main>
 
-    <div id="emailModal" style="display:none;">
-        <h2>Para continuar, por favor, informe seu e-mail:</h2>
-        <form id="emailForm">
-            <input type="email" id="emailInput" placeholder="seu-email@exemplo.com" required>
-            <button type="submit">Acessar Conteúdo</button>
-        </form>
+    <div id="emailModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Para continuar, por favor, informe seu e-mail:</h2>
+            <form id="emailForm">
+                <input type="email" id="emailInput" placeholder="seu-email@exemplo.com" required>
+                <button type="submit">Acessar Conteúdo</button>
+            </form>
+        </div>
     </div>
 
     <script src="script.js"></script>
