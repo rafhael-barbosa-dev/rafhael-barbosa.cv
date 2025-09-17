@@ -169,3 +169,55 @@ button:disabled { background-color: #555; cursor: not-allowed; }
     .charts-wrapper { flex-direction: column; }
     .competencies-grid { grid-template-columns: 1fr; }
 }
+
+/* --- AJUSTE 1: Corrigir cor do texto em Habilidades --- */
+.detail-box p {
+    color: var(--text-gray); /* Define a cor cinza para os parágrafos */
+}
+
+/* --- AJUSTE 4: Estilizar nova seção de Informações Pessoais --- */
+.personal-info-list {
+    list-style: none; /* Remove as bolinhas da lista */
+    padding: 0;
+    margin-top: 10px;
+}
+
+.personal-info-list li {
+    color: var(--text-gray); /* Cor cinza para o texto */
+    padding: 8px 0; /* Espaçamento vertical */
+    border-bottom: 1px solid var(--border-color); /* Linha divisória sutil */
+}
+
+.personal-info-list li:last-child {
+    border-bottom: none; /* Remove a linha do último item */
+}
+
+.personal-info-list strong {
+    color: var(--text-light); /* Cor branca para o rótulo (ex: "Nome:") */
+    margin-right: 8px; /* Espaço entre o rótulo e o valor */
+    display: inline-block;
+    min-width: 130px; /* Alinha os valores verticalmente */
+}
+
+.personal-info-list a {
+    color: var(--brand-red); /* Cor vermelha para os links */
+    text-decoration: none;
+    transition: text-decoration 0.2s;
+}
+
+.personal-info-list a:hover {
+    text-decoration: underline; /* Sublinhado ao passar o mouse */
+}
+
+/* --- AJUSTE DE RESPONSIVIDADE PARA AS ESTRELAS NO MOBILE --- */
+/* Esta regra será aplicada apenas em telas com largura máxima de 480px (celulares) */
+@media (max-width: 480px) {
+    .star {
+        font-size: 1.8rem; /* Reduz o tamanho da fonte (e da estrela) */
+    }
+
+    .stars-container {
+        gap: 2px; /* Reduz o espaçamento entre as estrelas */
+        padding: 0 10px; /* Adiciona um pequeno respiro nas laterais */
+    }
+}

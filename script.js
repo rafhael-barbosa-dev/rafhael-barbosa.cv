@@ -102,7 +102,7 @@ function renderRadarChart(data) {
                 backgroundColor: 'rgba(220, 38, 38, 0.2)',
                 borderColor: 'rgb(220, 38, 38)',
                 borderWidth: 2,
-                pointBackgroundColor: 'rgb(220, 38, 38)',
+                pointBackgroundColor: 'hsla(0, 72%, 51%, 1.00)',
                 pointBorderColor: '#fff',
                 pointHoverBackgroundColor: '#fff',
                 pointHoverBorderColor: 'rgb(220, 38, 38)'
