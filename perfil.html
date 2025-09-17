@@ -1,57 +1,98 @@
-<main class="container">
-    <section id="hero" class="card" data-aos="fade-up">
-        <h1 class="title">João Rafhael Barbosa</h1>
-        <h2 class="subtitle">Especialista em Operações V4 & Desenvolvedor de Soluções</h2>
-        <p class="summary">
-            "Nos últimos 5 anos, estive imerso na operação de uma franquia V4 Company, onde vivenciei cada desafio e oportunidade. [cite: 7] Minha inclinação natural para a lógica e organização me levou a não apenas executar, mas a sistematizar. [cite: 7] Criei processos, estruturei fluxos e, quando as ferramentas não eram suficientes, construí as minhas, culminando no desenvolvimento de um aplicativo e solidificando meu objetivo: migrar para a área de tecnologia da V4." [cite: 7]
-        </p>
-    </section>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>João Rafhael Barbosa | Perfil Profissional & Portfólio</title>
+    <meta name="description" content="Conheça o perfil de João Rafhael, Especialista em Operações V4 e Desenvolvedor de Soluções.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png"> <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+<body>
+    <div id="preloader">
+        <div class="loader-text">Loading...</div>
+    </div>
 
-    <section id="skills" class="skills-grid" data-aos="fade-up" data-aos-delay="100">
-        <div class="chart-container card">
+    <main class="container" id="main-content">
+        <section id="hero" class="card" data-aos="fade-up">
+            <h1 class="title">João Rafhael Barbosa</h1>
+            <h2 class="subtitle">Especialista em Operações V4 & Desenvolvedor de Soluções</h2>
+            <p class="summary">
+                "Nos últimos 5 anos, estive imerso na operação de uma franquia V4 Company, onde vivenciei cada desafio e oportunidade. Minha inclinação natural para a lógica e organização me levou a não apenas executar, mas a sistematizar. Criei processos, estruturei fluxos e, quando as ferramentas não eram suficientes, construí as minhas, culminando no desenvolvimento de um aplicativo e solidificando meu objetivo: migrar para a área de tecnologia da V4."
+            </p>
+        </section>
+
+        <section id="skills" class="card" data-aos="fade-up" data-aos-delay="100">
             <h3>Minhas Habilidades (Autoavaliação)</h3>
-            <canvas id="myChart"></canvas>
-        </div>
-        <div class="details-container card">
-            <h3>Detalhes da Área Selecionada</h3>
-            <div id="experienceBox" class="detail-box">
-                <h4>Experiências:</h4>
-                <p>Clique em uma área do gráfico para ver os detalhes.</p>
+            <div class="charts-wrapper">
+                <div class="chart-container">
+                    <canvas id="radarChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
+                </div>
             </div>
-            <div id="commentBox" class="detail-box">
-                <h4>Comentário:</h4>
-                <p>Aguardando seleção...</p>
+            <div class="interactive-legend" id="chartLegend">
+                </div>
+            <hr class="divider">
+            <div class="details-container">
+                <div id="experienceBox" class="detail-box">
+                    <h4>Experiências:</h4>
+                    <p>Selecione uma área na legenda acima para ver os detalhes.</p>
+                </div>
+                <div id="commentBox" class="detail-box">
+                    <h4>Comentário:</h4>
+                    <p>Aguardando seleção...</p>
+                </div>
             </div>
-        </div>
-    </section>
-    
-    <section id="competencies" class="card" data-aos="fade-up" data-aos-delay="200">
-        <h3>Competências-Chave</h3>
-        <ul>
-            <li><strong>Visão Sistêmica e Otimização de Processos:</strong> Habilidade natural para identificar gargalos e desenhar soluções estruturadas. [cite: 12]</li>
-            <li><strong>Perfil Técnico e Resolução de Problemas:</strong> Aptidão "Muito Alta" para habilidades técnicas, com foco em lógica e dados. [cite: 13]</li>
-            <li><strong>Desenvolvimento Prático de Ferramentas:</strong> Experiência na concepção e implementação de um aplicativo, incluindo banco de dados e lógica de programação. [cite: 14]</li>
-            <li><strong>Organização e Planejamento:</strong> Capacidade "Muito Alta" de planejamento, metódico e orientado a processos. [cite: 15]</li>
-        </ul>
-    </section>
+        </section>
+        
+        <section id="competencies" class="card" data-aos="fade-up" data-aos-delay="200">
+            <h3>Competências-Chave</h3>
+            <ul class="competencies-list">
+                <li><i class="fa-solid fa-sitemap"></i><strong>Visão Sistêmica e Otimização de Processos:</strong> Habilidade natural para identificar gargalos e desenhar soluções estruturadas.</li>
+                <li><i class="fa-solid fa-microchip"></i><strong>Perfil Técnico e Resolução de Problemas:</strong> Aptidão "Muito Alta" para habilidades técnicas, com foco em lógica e dados.</li>
+                <li><i class="fa-solid fa-screwdriver-wrench"></i><strong>Desenvolvimento Prático de Ferramentas:</strong> Experiência na concepção e implementação de um aplicativo, incluindo banco de dados e lógica de programação.</li>
+                <li><i class="fa-solid fa-list-check"></i><strong>Organização e Planejamento:</strong> Capacidade "Muito Alta" de planejamento, metódico e orientado a processos.</li>
+            </ul>
+            <div class="button-container">
+                <a href="assets/Analise_Comportamental.pdf" target="_blank" class="button">Ver Análise Comportamental</a>
+                <a href="assets/Relatorio_Estendido.pdf" target="_blank" class="button">Ver Relatório Estendido</a>
+            </div>
+        </section>
 
-    <section id="feedback" class="card" data-aos="fade-up" data-aos-delay="300">
-        <h3>Deixe seu Feedback</h3>
-        <form id="feedbackForm" class="feedback-form">
-            <textarea id="commentInput" placeholder="Seu comentário..."></textarea>
-            <button id="sendCommentBtn" type="button">Enviar Comentário</button>
-        </form>
-        <p id="feedbackSuccess" class="success-message" style="display: none;">Obrigado pelo seu feedback!</p>
-    </section>
+        <section id="work" class="card" data-aos="fade-up" data-aos-delay="250">
+            <h3>Um Pouco do Meu Trabalho</h3>
+            <div class="button-container">
+                <a href="LINK_PARA_SEU_LINKEDIN" target="_blank" class="button">LinkedIn</a>
+                <a href="LINK_PARA_SEU_GITHUB" target="_blank" class="button">GitHub</a>
+                <a href="LINK_PARA_PROJETO_1" target="_blank" class="button">Projeto App (Exemplo)</a>
+                <a href="LINK_PARA_PROJETO_2" target="_blank" class="button">Outro Projeto</a>
+            </div>
+        </section>
 
-</main>
+        <section id="feedback" class="card" data-aos="fade-up" data-aos-delay="300">
+            <h3>Deixe seu Feedback</h3>
+            <form id="feedbackForm" class="feedback-form">
+                <div class="stars-container">
+                    <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span><span class="star" data-value="6">★</span><span class="star" data-value="7">★</span><span class="star" data-value="8">★</span><span class="star" data-value="9">★</span><span class="star" data-value="10">★</span>
+                </div>
+                <div class="comment-box">
+                    <textarea id="commentInput" placeholder="Seu comentário..."></textarea>
+                    <button id="sendCommentBtn" type="button">Enviar Comentário</button>
+                </div>
+            </form>
+            <p id="feedbackSuccess" class="success-message" style="display: none;"></p>
+        </section>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-<script>
-  AOS.init({
-      once: true, // A animação acontece apenas uma vez
-      duration: 800 // Duração da animação
-  });
-</script>
-<script src="script.js"></script>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init({ once: true, duration: 800 });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
