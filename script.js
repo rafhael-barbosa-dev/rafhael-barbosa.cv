@@ -1,4 +1,4 @@
-const SCRIPT_URL = "AKfycbwcxGwL1n2B6tb3JUbSVqs1PH9wA5-nebKtqa4G3tCVKhrQtQCI2zUYIqvWYEAmHG2t"; // <-- COLE SUA URL AQUI!
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwcxGwL1n2B6tb3JUbSVqs1PH9wA5-nebKtqa4G3tCVKhrQtQCI2zUYIqvWYEAmHG2t/exec"; // <-- COLE SUA URL AQUI!
 
 // Lógica para a PÁGINA INICIAL (index.html)
 if (document.getElementById('lerMaisBtn')) {
@@ -118,3 +118,4 @@ if (document.getElementById('myChart')) {
     });
 
 }
+
