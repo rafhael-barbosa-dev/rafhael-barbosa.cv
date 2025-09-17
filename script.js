@@ -1,121 +1,141 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwcxGwL1n2B6tb3JUbSVqs1PH9wA5-nebKtqa4G3tCVKhrQtQCI2zUYIqvWYEAmHG2t/exec"; // <-- COLE SUA URL AQUI!
+// IMPORTANTE: Cole aqui a URL completa da implantação do seu Google Apps Script.
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwl5KeBy4G-QicmQKlF7MvR_iZ6AeOeToWU0jq_qh0UJl7YlnZ4nflqU_1xZHoMQAUf/exec";
 
-// Lógica para a PÁGINA INICIAL (index.html)
+// --- LÓGICA DA PÁGINA INICIAL (index.html) ---
 if (document.getElementById('lerMaisBtn')) {
     const lerMaisBtn = document.getElementById('lerMaisBtn');
     const emailModal = document.getElementById('emailModal');
     const emailForm = document.getElementById('emailForm');
-    const emailInput = document.getElementById('emailInput');
 
     lerMaisBtn.addEventListener('click', () => {
-        emailModal.style.display = 'block'; // Mostra o modal
+        emailModal.classList.add('visible');
     });
 
     emailForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Impede o envio padrão do formulário
-        const email = emailInput.value;
+        e.preventDefault();
+        const email = e.target.querySelector('#emailInput').value;
         if (email) {
+            e.target.querySelector('button').textContent = 'Aguarde...';
             const data = { type: 'newUser', email: email };
-            
             fetch(SCRIPT_URL, {
                 method: 'POST',
                 body: JSON.stringify(data),
+                headers: { 'Content-Type': 'application/json' },
             })
-            .then(response => response.json())
+            .then(res => res.json())
             .then(result => {
                 if(result.result === 'success') {
-                    // Salva o e-mail no navegador para usar depois
                     localStorage.setItem('userEmail', email);
-                    // Redireciona para a página de perfil
                     window.location.href = 'perfil.html';
+                } else {
+                    throw new Error(result.message || 'Erro desconhecido do script.');
                 }
-            }).catch(error => console.error('Error!', error.message));
+            }).catch(error => {
+                console.error('Erro no envio:', error.message);
+                e.target.querySelector('button').textContent = 'Acessar Conteúdo';
+                alert('Ocorreu um erro. Verifique sua conexão ou as configurações do script e tente novamente.');
+            });
         }
     });
 }
 
+// --- LÓGICA DA PÁGINA DE PERFIL (perfil.html) ---
+if (document.getElementById('radarChart')) {
+    // PROTEÇÃO DA PÁGINA
+    if (!localStorage.getItem('userEmail')) {
+        window.location.href = 'index.html';
+    }
 
-// Lógica para a PÁGINA DE PERFIL (perfil.html)
-if (document.getElementById('myChart')) {
-    let chartData = []; // Armazenará os dados do "Banco de dados"
+    let chartData = []; 
+    const chartColors = ['#DC2626', '#16A34A', '#D97706', '#9333EA', '#CA8A04', '#6D28D9', '#DB2777'];
 
-    // Função para buscar os dados da planilha
-    function loadChartData() {
+    const preloader = document.getElementById('preloader');
+    const mainContent = document.getElementById('main-content');
+    const legendContainer = document.getElementById('chartLegend');
+    const experienceBox = document.querySelector('#experienceBox p');
+    const commentBox = document.querySelector('#commentBox p');
+
+    function loadAndRenderCharts() {
         fetch(SCRIPT_URL)
             .then(res => res.json())
             .then(data => {
-                // Remove o cabeçalho (primeira linha) dos dados
                 chartData = data.bancoDeDados.slice(1);
-                renderChart(chartData);
-                // Você pode usar data.viacharacter para popular outra seção
+                renderRadarChart(chartData);
+                renderBarChart(chartData);
+                generateInteractiveLegend(chartData);
+
+                // Esconde o preloader e mostra o conteúdo
+                preloader.style.opacity = '0';
+                mainContent.style.visibility = 'visible';
+                mainContent.style.opacity = '1';
+                setTimeout(() => { preloader.style.display = 'none'; }, 500); // Remove o preloader após a transição
             });
     }
 
-    // Função para desenhar o gráfico
-    function renderChart(data) {
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const labels = data.map(row => row[0]); // Coluna "Area"
-        const values = data.map(row => row[1]); // Coluna "Autoavaliação"
+    function generateInteractiveLegend(data) {
+        const labels = data.map(row => row[0]);
+        labels.forEach((label, index) => {
+            const item = document.createElement('div');
+            item.className = 'legend-item';
+            item.textContent = label;
+            item.addEventListener('click', () => {
+                displayDetails(index);
+                document.querySelectorAll('.legend-item').forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
+            });
+            legendContainer.appendChild(item);
+        });
+    }
+    
+    function displayDetails(index) {
+        const selectedData = chartData[index];
+        experienceBox.textContent = selectedData[2];
+        commentBox.textContent = selectedData[3];
+    }
 
-        new Chart(ctx, {
-            type: 'radar', // Ou 'bar' para gráfico de barras
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Autoavaliação',
-                    data: values,
-                    backgroundColor: 'rgba(0, 82, 204, 0.2)',
-                    borderColor: 'rgba(0, 82, 204, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                onClick: (event, elements) => {
-                    if (elements.length > 0) {
-                        const clickedIndex = elements[0].index;
-                        const clickedData = data[clickedIndex];
-                        
-                        const experience = clickedData[2]; // Coluna "Experiencias"
-                        const comment = clickedData[3];    // Coluna "Comentário"
+    function renderRadarChart(data) {
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        const labels = data.map(row => row[0]);
+        const values = data.map(row => row[1]);
 
-                        // Atualiza as caixas de texto
-                        document.querySelector('#experienceBox p').textContent = experience;
-                        document.querySelector('#commentBox p').textContent = comment;
-                    }
-                },
-                scales: {
-                    r: {
-                        beginAtZero: true,
-                        max: 10 // Define a escala de 0 a 10
-                    }
-                }
+        new Chart(ctx, { /* ...Configuração do Gráfico Radar... */ });
+    }
+    
+    function renderBarChart(data) {
+        const ctx = document.getElementById('barChart').getContext('2d');
+        const labels = data.map(row => row[0]);
+        const values = data.map(row => row[1]);
+
+        new Chart(ctx, { /* ...Configuração do Gráfico de Barras... */ });
+    }
+
+    loadAndRenderCharts();
+
+    // --- LÓGICA DO SISTEMA DE ESTRELAS ---
+    const stars = document.querySelectorAll('.star');
+    let currentRating = 0;
+
+    function paintStars(rating) {
+        stars.forEach(star => {
+            star.classList.remove('selected');
+            if (star.dataset.value <= rating) {
+                star.classList.add('selected');
             }
         });
     }
 
-    // Carrega os dados assim que a página é aberta
-    loadChartData();
-
-    // Lógica para enviar comentários
-    const sendCommentBtn = document.getElementById('sendCommentBtn');
-    sendCommentBtn.addEventListener('click', () => {
-        const comment = document.getElementById('commentInput').value;
-        const userEmail = localStorage.getItem('userEmail');
-
-        if(comment && userEmail) {
-            const data = { type: 'newComment', email: userEmail, comment: comment };
-
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify(data)
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert('Obrigado pelo seu comentário!');
-                document.getElementById('commentInput').value = '';
-            });
-        }
+    stars.forEach(star => {
+        star.addEventListener('mouseover', () => {
+            for (let i = 0; i < 10; i++) {
+                stars[i].classList.toggle('hover', i < star.dataset.value);
+            }
+        });
+        star.addEventListener('mouseout', () => {
+            stars.forEach(s => s.classList.remove('hover'));
+        });
+        star.addEventListener('click', () => { /* ...Lógica do clique da estrela... */ });
     });
 
+    // --- LÓGICA DE ENVIO DE COMENTÁRIO ---
+    document.getElementById('sendCommentBtn').addEventListener('click', () => { /* ...Lógica do comentário... */ });
 }
-
