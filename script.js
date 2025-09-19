@@ -1,5 +1,5 @@
 // IMPORTANTE: Cole aqui a URL completa da implantação do seu Google Apps Script.
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJvnn2ylx-yGZVG3yK6-20li5Jy6wTT3ITpVd_1fzwKPI6kbNfY57upZIzO4JSPiHpnA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjzFrLA3jFZk696Y6AfGMRRz89l6xNbRf4hn4aA2AoplcU9fPftIxoYJ4W0UAK3v7O/exec";
 
 // --- LÓGICA DA PÁGINA INICIAL (index.html) ---
 if (document.getElementById('lerMaisBtn')) {
@@ -31,30 +31,38 @@ if (document.getElementById('lerMaisBtn')) {
 }
 
 // --- LÓGICA DA PÁGINA DE PERFIL (perfil.html) ---
-if (document.getElementById('radarChart')) {
+if (document.getElementById('main-content')) {
     // Proteção da página
     if (!localStorage.getItem('userEmail')) {
         window.location.href = 'index.html';
     }
 
-    let chartData = []; 
+    let chartData = [];
     const preloader = document.getElementById('preloader');
     const mainContent = document.getElementById('main-content');
-    const legendContainer = document.getElementById('chartLegend');
+    
+    // Elementos para o dropdown de habilidades
+    const dropdownButton = document.getElementById('dropdown-button');
+    const dropdownList = document.getElementById('dropdown-list');
     const experienceBox = document.querySelector('#experienceBox p');
     const commentBox = document.querySelector('#commentBox p');
 
     // Carrega dados da planilha e renderiza tudo
-    function loadAndRenderCharts() {
+    function loadAndRenderContent() {
         const dataUrl = `${SCRIPT_URL}?action=getData`;
         fetch(dataUrl).then(res => res.json()).then(data => {
-            if (data.error || !data.bancoDeDados) {
+            if (data.error || !data.bancoDeDados || !data.viaCharacter) {
                 throw new Error(data.message || 'A resposta do script está inválida.');
             }
             chartData = data.bancoDeDados.slice(1);
+
             renderRadarChart(chartData);
             renderBarChart(chartData);
-            generateInteractiveLegend(chartData);
+            
+            setupInteractiveDropdown(chartData); 
+
+            renderViaCharacterCards(data.viaCharacter.slice(1));
+
             preloader.style.opacity = '0';
             mainContent.style.visibility = 'visible';
             mainContent.style.opacity = '1';
@@ -65,186 +73,176 @@ if (document.getElementById('radarChart')) {
         });
     }
 
-    // Gera a legenda interativa
-    function generateInteractiveLegend(data) {
+    // Função para o dropdown de habilidades (sem alterações)
+    function setupInteractiveDropdown(data) {
+        if (!dropdownButton || !dropdownList) return;
         const labels = data.map(row => row[0]);
+        dropdownList.innerHTML = '';
         labels.forEach((label, index) => {
-            const item = document.createElement('div');
-            item.className = 'legend-item';
+            const item = document.createElement('li');
             item.textContent = label;
             item.addEventListener('click', () => {
                 displayDetails(index);
-                document.querySelectorAll('.legend-item').forEach(el => el.classList.remove('active'));
-                item.classList.add('active');
+                dropdownButton.textContent = label;
+                dropdownList.classList.remove('visible');
             });
-            legendContainer.appendChild(item);
+            dropdownList.appendChild(item);
+        });
+        dropdownButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            dropdownList.classList.toggle('visible');
+        });
+        window.addEventListener('click', () => {
+            if (dropdownList.classList.contains('visible')) {
+                dropdownList.classList.remove('visible');
+            }
         });
     }
-    
-    // Mostra os detalhes ao clicar na legenda
+
+    // Mostra os detalhes da habilidade selecionada
     function displayDetails(index) {
-        experienceBox.innerHTML = chartData[index][2].replace(/\n/g, '<br>'); // Preserva quebras de linha
+        experienceBox.innerHTML = chartData[index][2].replace(/\n/g, '<br>');
         commentBox.textContent = chartData[index][3];
     }
 
-    // Função para renderizar o gráfico de radar (com textos restaurados)
-function renderRadarChart(data) {
-    const ctx = document.getElementById('radarChart').getContext('2d');
-    const labels = data.map(row => row[0]);
-    const values = data.map(row => row[1]);
-    new Chart(ctx, {
-        type: 'radar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Autoavaliação',
-                data: values,
-                backgroundColor: 'rgba(220, 38, 38, 0.2)',
-                borderColor: 'rgb(220, 38, 38)',
-                borderWidth: 2,
-                pointBackgroundColor: 'hsla(0, 72%, 51%, 1.00)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(220, 38, 38)'
-            }]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                r: {
-                    angleLines: { color: 'rgba(225, 225, 230, 0.2)' },
-                    grid: { color: 'rgba(225, 225, 230, 0.2)' },
-                    pointLabels: { color: '#E1E1E6', font: { size: 12 } },
-                    ticks: {
-                        // ADICIONADO AQUI PARA REMOVER OS NÚMEROS
-                        display: false,
-                        backdropColor: '#202024',
-                        color: '#E1E1E6'
-                    },
-                    min: 0, max: 10
-                }
+    // Funções dos Gráficos (sem alterações)
+    function renderRadarChart(data) {
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        const labels = data.map(row => row[0]);
+        const values = data.map(row => row[1]);
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Autoavaliação',
+                    data: values,
+                    backgroundColor: 'rgba(220, 38, 38, 0.2)',
+                    borderColor: 'rgb(220, 38, 38)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'hsla(0, 72%, 51%, 1.00)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(220, 38, 38)'
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { r: { angleLines: { color: 'rgba(225, 225, 230, 0.2)' }, grid: { color: 'rgba(225, 225, 230, 0.2)' }, pointLabels: { color: '#E1E1E6', font: { size: 12 } }, ticks: { display: false, backdropColor: '#202024', color: '#E1E1E6' }, min: 0, max: 10 } }
             }
-        }
-    });
-}
-    
-    // Função para renderizar o gráfico de barras (com textos restaurados e barras largas)
-function renderBarChart(data) {
-    const ctx = document.getElementById('barChart').getContext('2d');
-    const labels = data.map(row => row[0]);
-    const values = data.map(row => row[1]);
-    const barColors = ['#DC2626', '#16A34A', '#D97706', '#DB2777', '#CA8A04', '#9333EA', '#6D28D9'];
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: values,
-                backgroundColor: barColors,
-                // REMOVIDO: barPercentage e categoryPercentage
-                // ADICIONADO: barThickness para forçar a largura das barras
-                barThickness: 30, // Largura de 30 pixels por barra
-            }]
-        },
-        options: {
-            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                x: {
-                    beginAtZero: true, max: 10,
-                    grid: { color: 'rgba(225, 225, 230, 0.1)' },
-                    ticks: { color: '#E1E1E6' }
-                },
-                y: {
-                    grid: { display: false },
-                    ticks: { color: '#E1E1E6' }
-                }
+        });
+    }
+    function renderBarChart(data) {
+        const ctx = document.getElementById('barChart').getContext('2d');
+        const labels = data.map(row => row[0]);
+        const values = data.map(row => row[1]);
+        const barColors = ['#DC2626', '#16A34A', '#D97706', '#DB2777', '#CA8A04', '#9333EA', '#6D28D9'];
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{ data: values, backgroundColor: barColors, barThickness: 30 }]
+            },
+            options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true, max: 10, grid: { color: 'rgba(225, 225, 230, 0.1)' }, ticks: { color: '#E1E1E6' } }, y: { grid: { display: false }, ticks: { color: '#E1E1E6' } } }
             }
-        }
-    });
-}
-
-    loadAndRenderCharts();
-
-// --- LÓGICA DO SISTEMA DE FEEDBACK ---
-const stars = document.querySelectorAll('.star');
-const commentInput = document.getElementById('commentInput');
-const sendCommentBtn = document.getElementById('sendCommentBtn');
-const feedbackModal = document.getElementById('feedbackModal');
-const closeFeedbackModalBtn = document.getElementById('closeFeedbackModalBtn');
-let currentRating = 0;
-
-// Lógica das estrelas (hover e click)
-stars.forEach(star => {
-    star.addEventListener('mouseover', () => {
-        const hoverValue = parseInt(star.dataset.value);
-        stars.forEach(s => s.classList.toggle('hover', parseInt(s.dataset.value) <= hoverValue));
-    });
-    star.addEventListener('mouseout', () => stars.forEach(s => s.classList.remove('hover')));
-    star.addEventListener('click', () => {
-        currentRating = parseInt(star.dataset.value);
-        stars.forEach(s => s.classList.toggle('selected', parseInt(s.dataset.value) <= currentRating));
-    });
-});
-
-// Lógica de envio do comentário para a planilha
-sendCommentBtn.addEventListener('click', () => {
-    const comment = commentInput.value.trim();
-    const rating = currentRating;
-    if (comment === "" && rating === 0) {
-        alert("Por favor, deixe um comentário ou uma avaliação.");
-        return;
+        });
     }
-    sendCommentBtn.textContent = "Enviando...";
-    sendCommentBtn.disabled = true;
 
-    const url = new URL(SCRIPT_URL);
-    url.searchParams.append('action', 'newFeedback');
-    url.searchParams.append('email', localStorage.getItem('userEmail'));
-    url.searchParams.append('rating', rating);
-    url.searchParams.append('comment', comment);
+    // --- FUNÇÃO VIA CHARACTER ATUALIZADA PARA A CAIXA DE TEXTO ÚNICA ---
+    function renderViaCharacterCards(data) {
+        const container = document.getElementById('via-character-row');
+        const descriptionBox = document.querySelector('#via-character-description-box p');
+        if (!container || !descriptionBox) return;
 
-    fetch(url).then(res => res.json()).then(result => {
-        if (result.result === 'success') {
-            feedbackModal.style.display = 'flex'; // Mostra o pop-up
-        } else { throw new Error(result.message); }
-    }).catch(error => {
-        console.error("Erro ao enviar feedback:", error);
-        alert("Ocorreu um erro ao enviar seu feedback. Tente novamente.");
-        sendCommentBtn.textContent = "Enviar Comentário";
-        sendCommentBtn.disabled = false; // Reabilita o botão em caso de erro
-    });
-});
+        container.innerHTML = ''; // Limpa antes de adicionar
 
-// --- LÓGICA PARA FECHAR O POP-UP (VERSÃO FINAL) ---
+        data.forEach(row => {
+            const priority = parseInt(row[0]);
+            const characteristic = row[1];
+            const description = row[2];
 
-// 1. Função central para esconder o pop-up e atualizar o botão
-function hideFeedbackModal() {
-    feedbackModal.style.display = 'none';
-    sendCommentBtn.textContent = 'Enviado'; // Mudar o texto do botão
-    // A propriedade 'disabled' já foi definida como 'true' ao clicar,
-    // e como não a reativamos no caminho de sucesso, ela permanecerá desativada.
-}
+            const card = document.createElement('div');
+            card.className = 'via-character-card';
+            const iconClass = getIconForCharacteristic(characteristic);
 
-// 2. Fechar clicando no botão "Fechar"
-closeFeedbackModalBtn.addEventListener('click', hideFeedbackModal);
+            // Card simplificado, sem descrição ou seta
+            card.innerHTML = `
+                <i class="fa-solid ${iconClass}"></i>
+                <h4>${priority}º ${characteristic}</h4>
+            `;
 
-// 3. Fechar clicando fora da caixa do pop-up
-feedbackModal.addEventListener('click', (event) => {
-    if (event.target === feedbackModal) {
-        hideFeedbackModal();
+            // Função que atualiza a caixa de texto e o card ativo
+            const updateDetails = () => {
+                descriptionBox.textContent = description;
+                document.querySelectorAll('.via-character-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+            };
+
+            // Adiciona os eventos
+            card.addEventListener('mouseover', updateDetails);
+            card.addEventListener('click', updateDetails);
+
+            if (priority <= 5) {
+                card.classList.add(`priority-${priority}`);
+            } else {
+                // Lógica de cores (sem alteração)
+                const totalSteps = 24 - 5;
+                const currentStep = priority - 5;
+                const startColor = { r: 220, g: 38, b: 38 };
+                const endColor = { r: 50, g: 50, b: 56 };
+                const r = Math.round(startColor.r + (endColor.r - startColor.r) * (currentStep / totalSteps));
+                const g = Math.round(startColor.g + (endColor.g - startColor.g) * (currentStep / totalSteps));
+                const b = Math.round(startColor.b + (endColor.b - startColor.b) * (currentStep / totalSteps));
+                card.style.borderColor = `rgb(${r}, ${g}, ${b})`;
+                card.querySelector('i').style.color = `rgb(${r}, ${g}, ${b})`;
+            }
+            container.appendChild(card);
+        });
     }
-});
 
-// 4. Fechar pressionando a tecla "Escape"
-window.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && feedbackModal.style.display === 'flex') {
-        hideFeedbackModal();
+    // Função auxiliar para escolher ícones (sem alterações)
+    function getIconForCharacteristic(characteristic) {
+        const lowerCaseChar = characteristic.toLowerCase();
+        if (lowerCaseChar.includes('amor')) return 'fa-heart';
+        if (lowerCaseChar.includes('aprendizagem')) return 'fa-book-open';
+        if (lowerCaseChar.includes('curiosidade')) return 'fa-magnifying-glass';
+        if (lowerCaseChar.includes('criatividade')) return 'fa-lightbulb';
+        if (lowerCaseChar.includes('perspectiva')) return 'fa-mountain-sun';
+        if (lowerCaseChar.includes('bravura')) return 'fa-shield-halved';
+        if (lowerCaseChar.includes('perseverança') || lowerCaseChar.includes('diligência')) return 'fa-person-digging';
+        if (lowerCaseChar.includes('honestidade')) return 'fa-check-double';
+        if (lowerCaseChar.includes('entusiasmo')) return 'fa-bolt';
+        if (lowerCaseChar.includes('bondade')) return 'fa-hand-holding-heart';
+        if (lowerCaseChar.includes('inteligência social')) return 'fa-users';
+        if (lowerCaseChar.includes('trabalho em equipe')) return 'fa-people-group';
+        if (lowerCaseChar.includes('justiça')) return 'fa-scale-balanced';
+        if (lowerCaseChar.includes('liderança')) return 'fa-crown';
+        if (lowerCaseChar.includes('perdão')) return 'fa-dove';
+        if (lowerCaseChar.includes('humildade')) return 'fa-leaf';
+        if (lowerCaseChar.includes('prudência')) return 'fa-circle-check';
+        if (lowerCaseChar.includes('autocontrole')) return 'fa-hand';
+        if (lowerCaseChar.includes('belo') || lowerCaseChar.includes('excelência')) return 'fa-gem';
+        if (lowerCaseChar.includes('gratidão')) return 'fa-seedling';
+        if (lowerCaseChar.includes('esperança')) return 'fa-star';
+        if (lowerCaseChar.includes('humor')) return 'fa-face-laugh-beam';
+        if (lowerCaseChar.includes('espiritualidade')) return 'fa-om';
+        return 'fa-question-circle'; // Ícone padrão
     }
-});
 
-    // AJUSTE 4: Correção do Bug das Estrelas
+    loadAndRenderContent();
+
+    // --- LÓGICA DO SISTEMA DE FEEDBACK (Sem alterações) ---
+    const stars = document.querySelectorAll('.star');
+    const commentInput = document.getElementById('commentInput');
+    const sendCommentBtn = document.getElementById('sendCommentBtn');
+    const feedbackModal = document.getElementById('feedbackModal');
+    const closeFeedbackModalBtn = document.getElementById('closeFeedbackModalBtn');
+    let currentRating = 0;
+
     stars.forEach(star => {
         star.addEventListener('mouseover', () => {
             const hoverValue = parseInt(star.dataset.value);
@@ -256,33 +254,36 @@ window.addEventListener('keydown', (event) => {
             stars.forEach(s => s.classList.toggle('selected', parseInt(s.dataset.value) <= currentRating));
         });
     });
-
     sendCommentBtn.addEventListener('click', () => {
-    const comment = commentInput.value.trim();
-    const rating = currentRating;
-    if (comment === "" && rating === 0) {
-        alert("Por favor, deixe um comentário ou uma avaliação.");
-        return;
-    }
-    sendCommentBtn.textContent = "Enviando...";
-    sendCommentBtn.disabled = true;
-
-    const url = new URL(SCRIPT_URL);
-    url.searchParams.append('action', 'newFeedback');
-    url.searchParams.append('email', localStorage.getItem('userEmail'));
-    url.searchParams.append('rating', rating);
-    // A LINHA ABAIXO FOI CORRIGIDA
-    url.searchParams.append('comment', comment);
-
-    fetch(url).then(res => res.json()).then(result => {
-        if (result.result === 'success') {
-            feedbackModal.style.display = 'flex';
-        } else { throw new Error(result.message); }
-    }).catch(error => {
-        console.error("Erro ao enviar feedback:", error);
-        alert("Ocorreu um erro ao enviar seu feedback. Tente novamente.");
-        sendCommentBtn.textContent = "Enviar Comentário";
-        sendCommentBtn.disabled = false;
+        const comment = commentInput.value.trim();
+        const rating = currentRating;
+        if (comment === "" && rating === 0) {
+            alert("Por favor, deixe um comentário ou uma avaliação.");
+            return;
+        }
+        sendCommentBtn.textContent = "Enviando...";
+        sendCommentBtn.disabled = true;
+        const url = new URL(SCRIPT_URL);
+        url.searchParams.append('action', 'newFeedback');
+        url.searchParams.append('email', localStorage.getItem('userEmail'));
+        url.searchParams.append('rating', rating);
+        url.searchParams.append('comment', comment);
+        fetch(url).then(res => res.json()).then(result => {
+            if (result.result === 'success') {
+                feedbackModal.style.display = 'flex';
+            } else { throw new Error(result.message); }
+        }).catch(error => {
+            console.error("Erro ao enviar feedback:", error);
+            alert("Ocorreu um erro ao enviar seu feedback. Tente novamente.");
+            sendCommentBtn.textContent = "Enviar Comentário";
+            sendCommentBtn.disabled = false;
+        });
     });
-});
+    function hideFeedbackModal() {
+        feedbackModal.style.display = 'none';
+        sendCommentBtn.textContent = 'Enviado';
+    }
+    closeFeedbackModalBtn.addEventListener('click', hideFeedbackModal);
+    feedbackModal.addEventListener('click', (event) => { if (event.target === feedbackModal) hideFeedbackModal(); });
+    window.addEventListener('keydown', (event) => { if (event.key === 'Escape' && feedbackModal.style.display === 'flex') hideFeedbackModal(); });
 }
