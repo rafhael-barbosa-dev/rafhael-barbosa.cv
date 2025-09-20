@@ -235,55 +235,55 @@ if (document.getElementById('main-content')) {
 
     loadAndRenderContent();
 
-    // --- LÓGICA DO SISTEMA DE FEEDBACK (Sem alterações) ---
-    const stars = document.querySelectorAll('.star');
-    const commentInput = document.getElementById('commentInput');
-    const sendCommentBtn = document.getElementById('sendCommentBtn');
-    const feedbackModal = document.getElementById('feedbackModal');
-    const closeFeedbackModalBtn = document.getElementById('closeFeedbackModalBtn');
-    let currentRating = 0;
+    // --- LÓGICA DO SISTEMA DE FEEDBACK ---
+const stars = document.querySelectorAll('.star');
+const commentInput = document.getElementById('commentInput');
+const sendCommentBtn = document.getElementById('sendCommentBtn');
+const feedbackModal = document.getElementById('feedbackModal');
+const closeFeedbackModalBtn = document.getElementById('closeFeedbackModalBtn');
+let currentRating = 0;
 
-    stars.forEach(star => {
-        star.addEventListener('mouseover', () => {
-            const hoverValue = parseInt(star.dataset.value);
-            stars.forEach(s => s.classList.toggle('hover', parseInt(s.dataset.value) <= hoverValue));
-        });
-        star.addEventListener('mouseout', () => stars.forEach(s => s.classList.remove('hover')));
-        star.addEventListener('click', () => {
-            currentRating = parseInt(star.dataset.value);
-            stars.forEach(s => s.classList.toggle('selected', parseInt(s.dataset.value) <= currentRating));
-        });
+stars.forEach(star => {
+    star.addEventListener('mouseover', () => {
+        const hoverValue = parseInt(star.dataset.value);
+        stars.forEach(s => s.classList.toggle('hover', parseInt(s.dataset.value) <= hoverValue));
     });
-    sendCommentBtn.addEventListener('click', () => {
-        const comment = commentInput.value.trim();
-        const rating = currentRating;
-        if (comment === "" && rating === 0) {
-            alert("Por favor, deixe um comentário ou uma avaliação.");
-            return;
-        }
-        sendCommentBtn.textContent = "Enviando...";
-        sendCommentBtn.disabled = true;
-        const url = new URL(SCRIPT_URL);
-        url.searchParams.append('action', 'newFeedback');
-        url.searchParams.append('email', localStorage.getItem('userEmail'));
-        url.searchParams.append('rating', rating);
-        url.searchParams.append('comment', comment);
-        fetch(url).then(res => res.json()).then(result => {
-            if (result.result === 'success') {
-                feedbackModal.style.display = 'flex';
-            } else { throw new Error(result.message); }
-        }).catch(error => {
-            console.error("Erro ao enviar feedback:", error);
-            alert("Ocorreu um erro ao enviar seu feedback. Tente novamente.");
-            sendCommentBtn.textContent = "Enviar Comentário";
-            sendCommentBtn.disabled = false;
-        });
+    star.addEventListener('mouseout', () => stars.forEach(s => s.classList.remove('hover')));
+    star.addEventListener('click', () => {
+        currentRating = parseInt(star.dataset.value);
+        stars.forEach(s => s.classList.toggle('selected', parseInt(s.dataset.value) <= currentRating));
     });
-    function hideFeedbackModal() {
-        feedbackModal.style.display = 'none';
-        sendCommentBtn.textContent = 'Enviado';
+});
+sendCommentBtn.addEventListener('click', () => {
+    const comment = commentInput.value.trim();
+    const rating = currentRating;
+    if (comment === "" && rating === 0) {
+        alert("Por favor, deixe um comentário ou uma avaliação.");
+        return;
     }
-    closeFeedbackModalBtn.addEventListener('click', hideFeedbackModal);
-    feedbackModal.addEventListener('click', (event) => { if (event.target === feedbackModal) hideFeedbackModal(); });
-    window.addEventListener('keydown', (event) => { if (event.key === 'Escape' && feedbackModal.style.display === 'flex') hideFeedbackModal(); });
+    sendCommentBtn.textContent = "Enviando...";
+    sendCommentBtn.disabled = true;
+    const url = new URL(SCRIPT_URL);
+    url.searchParams.append('action', 'newFeedback');
+    url.searchParams.append('email', localStorage.getItem('userEmail'));
+    url.searchParams.append('rating', rating);
+    url.searchParams.append('comment', comment);
+    fetch(url).then(res => res.json()).then(result => {
+        if (result.result === 'success') {
+            feedbackModal.style.display = 'flex';
+        } else { throw new Error(result.message); }
+    }).catch(error => {
+        console.error("Erro ao enviar feedback:", error);
+        alert("Ocorreu um erro ao enviar seu feedback. Tente novamente.");
+        sendCommentBtn.textContent = "Enviar Comentário";
+        sendCommentBtn.disabled = false;
+    });
+});
+function hideFeedbackModal() {
+    feedbackModal.style.display = 'none';
+    sendCommentBtn.textContent = 'Enviado';
+}
+closeFeedbackModalBtn.addEventListener('click', hideFeedbackModal);
+feedbackModal.addEventListener('click', (event) => { if (event.target === feedbackModal) hideFeedbackModal(); });
+window.addEventListener('keydown', (event) => { if (event.key === 'Escape' && feedbackModal.style.display === 'flex') hideFeedbackModal(); });
 }
