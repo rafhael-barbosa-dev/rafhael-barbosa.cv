@@ -152,7 +152,6 @@ h3 { font-size: 1.5rem; color: var(--text-light); margin-bottom: 20px; border-le
 .chart-wrapper {
     flex: 1;
     min-width: 300px;
-    height: 400px;
     position: relative;
 }
 .divider { border: none; height: 1px; background-color: var(--border-color); margin: 25px 0; }
@@ -260,4 +259,21 @@ button:disabled { background-color: #555; cursor: not-allowed; }
 @media (max-width: 480px) {
     .star { font-size: 2rem; }
     .stars-container { gap: 5px; padding: 0 10px; }
+}
+/* Adicione este código no final do seu style.css */
+
+/* Estilos para a página de entrada (index.html) */
+body.index-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Garante que o corpo ocupe toda a altura da tela */
+}
+
+/* Organiza o conteúdo da página inicial */
+.index-container {
+    display: flex;
+    flex-direction: column; /* Coloca o título acima do botão */
+    align-items: center; /* Centraliza horizontalmente */
+    gap: 25px; /* Cria um espaço entre o título e o botão */
 }

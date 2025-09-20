@@ -1,5 +1,5 @@
 // IMPORTANTE: Cole aqui a URL completa da implantação do seu Google Apps Script.
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjzFrLA3jFZk696Y6AfGMRRz89l6xNbRf4hn4aA2AoplcU9fPftIxoYJ4W0UAK3v7O/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxN-0sMD168gFdNVq-a8KYIKjeX5Sn22UHnnXQ88MKOCycd2Wrglz43ra0ySXvRZzChg/exec";
 
 // --- LÓGICA DA PÁGINA INICIAL (index.html) ---
 if (document.getElementById('lerMaisBtn')) {
@@ -134,23 +134,66 @@ if (document.getElementById('main-content')) {
         });
     }
     function renderBarChart(data) {
-        const ctx = document.getElementById('barChart').getContext('2d');
-        const labels = data.map(row => row[0]);
-        const values = data.map(row => row[1]);
-        const barColors = ['#DC2626', '#16A34A', '#D97706', '#DB2777', '#CA8A04', '#9333EA', '#6D28D9'];
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{ data: values, backgroundColor: barColors, barThickness: 30 }]
+    // --- INÍCIO DA PARTE NOVA ---
+    // Pega o contêiner do gráfico pelo ID que adicionamos
+    const chartWrapper = document.getElementById('bar-chart-wrapper');
+    if (!chartWrapper) return; // Se não encontrar, para a execução
+
+    const numberOfBars = data.length;
+    const heightPerBar = 50; // 50px de altura para cada barra (30px da barra + 20px de espaço)
+    const chartHeight = numberOfBars * heightPerBar;
+
+    // Define a altura do contêiner dinamicamente
+    chartWrapper.style.height = `${chartHeight}px`;
+    // --- FIM DA PARTE NOVA ---
+
+    const ctx = document.getElementById('barChart').getContext('2d');
+    const labels = data.map(row => row[0]);
+    const values = data.map(row => row[1]);
+    const barColors = ['#DC2626', '#16A34A', '#D97706', '#DB2777', '#CA8A04', '#9333EA', '#6D28D9'];
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: barColors,
+                barThickness: 30,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false, // Muito importante para que a altura dinâmica funcione
+            plugins: {
+                legend: {
+                    display: false
+                }
             },
-            options: {
-                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { x: { beginAtZero: true, max: 10, grid: { color: 'rgba(225, 225, 230, 0.1)' }, ticks: { color: '#E1E1E6' } }, y: { grid: { display: false }, ticks: { color: '#E1E1E6' } } }
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    max: 10,
+                    grid: {
+                        color: 'rgba(225, 225, 230, 0.1)'
+                    },
+                    ticks: {
+                        color: '#E1E1E6'
+                    }
+                },
+                y: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: '#E1E1E6'
+                    }
+                }
             }
-        });
-    }
+        }
+    });
+}
 
     // --- FUNÇÃO VIA CHARACTER ATUALIZADA PARA A CAIXA DE TEXTO ÚNICA ---
     function renderViaCharacterCards(data) {
