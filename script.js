@@ -135,21 +135,23 @@ if (document.getElementById('main-content')) {
     }
     // Substitua a função inteira no seu arquivo script.js
 
+// Substitua a função inteira no seu arquivo script.js
+
 function renderBarChart(data) {
     const chartWrapper = document.getElementById('bar-chart-wrapper');
     const canvas = document.getElementById('barChart');
     if (!chartWrapper || !canvas) return;
 
     const numberOfBars = data.length;
-    // Define uma altura por barra e um mínimo para o gráfico não ficar muito pequeno
-    const heightPerBar = 50; // 30px da barra + 20px de espaço
-    const minHeight = 250; // Altura mínima de 250px
+    const heightPerBar = 50; 
+    const minHeight = 250; 
     const calculatedHeight = numberOfBars * heightPerBar;
 
-    // Usa a altura calculada ou a mínima, o que for maior
     chartWrapper.style.height = `${Math.max(calculatedHeight, minHeight)}px`;
 
-    const ctx = canvas.getContext('d');
+    // A CORREÇÃO ESTÁ AQUI: '2d' em vez de 'd'
+    const ctx = canvas.getContext('2d'); 
+
     const labels = data.map(row => row[0]);
     const values = data.map(row => row[1]);
     const barColors = ['#DC2626', '#16A34A', '#D97706', '#DB2777', '#CA8A04', '#9333EA', '#6D28D9'];
@@ -167,7 +169,7 @@ function renderBarChart(data) {
         options: {
             indexAxis: 'y',
             responsive: true,
-            maintainAspectRatio: false, // ESSENCIAL para a altura dinâmica funcionar
+            maintainAspectRatio: false,
             plugins: {
                 legend: { display: false }
             },
