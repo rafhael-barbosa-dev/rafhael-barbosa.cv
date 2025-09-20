@@ -133,21 +133,23 @@ if (document.getElementById('main-content')) {
             }
         });
     }
-    function renderBarChart(data) {
-    // --- INÍCIO DA PARTE NOVA ---
-    // Pega o contêiner do gráfico pelo ID que adicionamos
+    // Substitua a função inteira no seu arquivo script.js
+
+function renderBarChart(data) {
     const chartWrapper = document.getElementById('bar-chart-wrapper');
-    if (!chartWrapper) return; // Se não encontrar, para a execução
+    const canvas = document.getElementById('barChart');
+    if (!chartWrapper || !canvas) return;
 
     const numberOfBars = data.length;
-    const heightPerBar = 50; // 50px de altura para cada barra (30px da barra + 20px de espaço)
-    const chartHeight = numberOfBars * heightPerBar;
+    // Define uma altura por barra e um mínimo para o gráfico não ficar muito pequeno
+    const heightPerBar = 50; // 30px da barra + 20px de espaço
+    const minHeight = 250; // Altura mínima de 250px
+    const calculatedHeight = numberOfBars * heightPerBar;
 
-    // Define a altura do contêiner dinamicamente
-    chartWrapper.style.height = `${chartHeight}px`;
-    // --- FIM DA PARTE NOVA ---
+    // Usa a altura calculada ou a mínima, o que for maior
+    chartWrapper.style.height = `${Math.max(calculatedHeight, minHeight)}px`;
 
-    const ctx = document.getElementById('barChart').getContext('2d');
+    const ctx = canvas.getContext('d');
     const labels = data.map(row => row[0]);
     const values = data.map(row => row[1]);
     const barColors = ['#DC2626', '#16A34A', '#D97706', '#DB2777', '#CA8A04', '#9333EA', '#6D28D9'];
@@ -165,30 +167,20 @@ if (document.getElementById('main-content')) {
         options: {
             indexAxis: 'y',
             responsive: true,
-            maintainAspectRatio: false, // Muito importante para que a altura dinâmica funcione
+            maintainAspectRatio: false, // ESSENCIAL para a altura dinâmica funcionar
             plugins: {
-                legend: {
-                    display: false
-                }
+                legend: { display: false }
             },
             scales: {
                 x: {
                     beginAtZero: true,
                     max: 10,
-                    grid: {
-                        color: 'rgba(225, 225, 230, 0.1)'
-                    },
-                    ticks: {
-                        color: '#E1E1E6'
-                    }
+                    grid: { color: 'rgba(225, 225, 230, 0.1)' },
+                    ticks: { color: '#E1E1E6' }
                 },
                 y: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        color: '#E1E1E6'
-                    }
+                    grid: { display: false },
+                    ticks: { color: '#E1E1E6' }
                 }
             }
         }
